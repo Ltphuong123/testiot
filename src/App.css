@@ -1,0 +1,83 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.sensor-data,
+.thresholds,
+.control-panel {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin: 20px auto;
+  width: 60%;
+  border-radius: 10px;
+}
+
+.threshold-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.threshold-item label {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.threshold-item input {
+  width: 60px;
+  padding: 5px;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.threshold-item button {
+  padding: 5px 10px;
+  font-size: 16px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.threshold-item button:hover {
+  background-color: #1976d2;
+}
+
+.control-panel .mode-selector {
+  margin-bottom: 20px;
+}
+
+.control-panel .mode-selector label {
+  margin: 0 10px;
+  font-size: 18px;
+}
+
+.manual-controls button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.manual-controls button:hover {
+  background-color: #45a049;
+}
+
+.status {
+  margin-top: 20px;
+  background-color: #d9edf7;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.status p {
+  font-size: 20px;
+  margin: 10px 0;
+  color: #333;
+}
