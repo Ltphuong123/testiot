@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { database } from './firebase';
-import { ref, onValue, update ,get} from 'firebase/database';
+import { ref, onValue, update } from 'firebase/database';
 import { FaTemperatureHigh, FaTint, FaSun } from 'react-icons/fa';
 import { MdOutlineWaterDrop } from 'react-icons/md';
 
