@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { database } from './firebase';
-import { ref, onValue, update } from 'firebase/database';
+import { ref, onValue, update ,get} from 'firebase/database';
 import { FaTemperatureHigh, FaTint, FaSun } from 'react-icons/fa';
 import { MdOutlineWaterDrop } from 'react-icons/md';
 
@@ -19,16 +19,23 @@ function Main() {
     humidity: 0,
     soilMoisture: 0,
     lightIntensity: 0,
-  }); // Dữ liệu cảm biến
+  }); 
   const [schedule, setSchedule] = useState({
     date: '',
     time: '',
     pumpDuration: '',
-  }); // Thời gian lịch tưới
+  }); 
+
+  const [saveschedule, setSaveSchedule] = useState({
+    date: '',
+    time: '',
+    pumpDuration: '',
+  }); 
   const [timing, setTiming] = useState({
     manualModeDuration: 0, // Thời gian chế độ thủ công
     minPumpOnDuration: 0, // Thời gian tối thiểu máy bơm hoạt động
   });
+
 
   // useEffect để lắng nghe thay đổi từ cơ sở dữ liệu Firebase
   useEffect(() => {
@@ -61,6 +68,11 @@ function Main() {
     const lightRef = ref(database, '/manualControl/light');
     onValue(lightRef, (snapshot) => {
       setLight(snapshot.val());
+    });
+
+    const scheduleRef = ref(database, '/schedule');
+    onValue(scheduleRef, (snapshot) => {
+      setSaveSchedule(snapshot.val());
     });
   }, []);
 
@@ -110,6 +122,17 @@ function Main() {
     setSchedule((prev) => ({ ...prev, [name]: value })); // Cập nhật lịch tưới
   };
 
+  // Hàm hủy (reset form và xóa lịch từ Firebase)
+const handleCancel = () => {
+  setSchedule( {
+    date: '',
+    time: '',
+    pumpDuration: '',
+  });
+  update(ref(database, '/schedule'), { ...schedule }); 
+};
+
+
   return (
     <div className="container mx-auto p-8 max-w-4xl bg-white shadow-lg rounded-lg mt-10">
     {/* Hiển thị dữ liệu cảm biến */}
@@ -152,7 +175,7 @@ function Main() {
                 max="100"
                 value={value}
                 onChange={(e) => handleThresholdChange(key, parseInt(e.target.value))}
-                className={`w-full h-2 bg-${color}-200 rounded-lg appearance-none cursor-pointer`}
+                className={`w-full h-2 bg-gradient-to-l from-yellow-300 rounded-lg appearance-none cursor-pointer`}
                 />
             </div>
             ))}
@@ -249,8 +272,24 @@ function Main() {
             Lưu lịch
             </button>
         </form>
-    </div>
 
+            {/* Hiển thị lịch tưới đã lưu */}
+    
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold text-gray-700">Lịch tưới đã lưu:</h3>
+        <p><strong>Ngày: </strong>{saveschedule.date}</p>
+        <p><strong>Giờ: </strong>{saveschedule.time}</p>
+        <p><strong>Thời gian bật bơm: </strong>{saveschedule.pumpDuration} phút</p>
+        
+        <button
+          type="button"
+          onClick={handleCancel} // Gọi hàm hủy khi nhấn nút
+          className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors duration-300 w-full"
+        >
+          Hủy
+        </button>
+      </div>
+    </div>
   );
 }
 
